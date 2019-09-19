@@ -1,0 +1,1 @@
+ERROR 1102 (42000): Incorrect database name 'CREATE DATABASE  CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;'
