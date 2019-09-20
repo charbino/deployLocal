@@ -1,0 +1,31 @@
+server {
+    server_name _HOSTNAME_;
+    root _PATH_;
+
+    index index.php;
+
+    error_log /var/log/nginx/error.log;
+    access_log /var/log/nginx/access.log;
+    location = /favicon.ico {
+            log_not_found off;
+            access_log off;
+    }
+
+    location / {
+            # This is cool because no php is touched for static content.
+            # include the "?$args" part so non-default permalinks doesn't break when using query string
+            try_files $uri $uri/ /index.php?$args;
+    }
+
+    location ~ \.php$ {
+            #NOTE: You should have "cgi.fix_pathinfo = 0;" in php.ini
+            fastcgi_pass   127.0.0.1:9000;
+            fastcgi_intercept_errors on;
+            include fastcgi.conf;
+    }
+
+    location ~* \.(js|css|png|jpg|jpeg|gif|ico)$ {
+            expires max;
+            log_not_found off;
+    }
+}

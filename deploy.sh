@@ -2,7 +2,7 @@
 #=======================================================================================================================
 # Script configuration
 #
-#   Version : 0.0.1
+#   Version : 0.0.2
 #   Author :  Sébastien Framinet
 #
 #   Ce script permet
@@ -57,8 +57,7 @@ clear
 #Nom du projet
 echo -n "Nom du projet : "
 read project_name
-while [ -z $project_name ]
-do
+while [ -z $project_name ] ; do
      echo -n "Le nom de projet ne peut etre vide, Nom du projet : "
      read project_name
 done
@@ -66,29 +65,25 @@ done
 #Hostname
 echo -n "Hostname [default : $project_name.local] : "
 read hostname
-if [ -z $hostname ]
-then
+if [ -z $hostname ] ; then
     hostname="$project_name.local"
 fi
 
 #Path
 echo -n "Project Path [default : $default_project_path/$project_name] : "
 read project_path
-if [ -z $project_path ]
-then
+if [ -z $project_path ] ; then
     project_path="$default_project_path/$project_name"
 fi
 
 #Type de projet
 echo -n "Type de projet : 0)Prestashop  1)Symfony  2)Wordpress : "
 read project_type
-while [ -z $project_type ]
-do
+while [ -z $project_type ] ; do
      echo -n "Mauvais type de projet, 0)Prestashop  1)Symfony  2)Wordpress :  "
      read project_type
 done
-while [ $project_type != 0 ] && [ $project_type != 1 ]  && [ $project_type != 2 ]
-do
+while [ $project_type != 0 ] && [ $project_type != 1 ]  && [ $project_type != 2 ] ; do
      echo -n "Mauvais type de projet, 0)Prestashop  1)Symfony  2)Wordpress :  "
      read project_type
 done
@@ -97,30 +92,25 @@ echo -e "\n"
 #GIT
 echo -n "Télécharger les sources depuis git Y,N ? [Default N] : "
 read download_source
-if [ -z $download_source ]
-then
+if [ -z $download_source ] ; then
     download_source="N"
 fi
-while [ $download_source != 'y' ] && [ $download_source != 'Y' ]  && [ $download_source != 'n' ] && [ $download_source != 'N' ]
-do
+while [ $download_source != 'y' ] && [ $download_source != 'Y' ]  && [ $download_source != 'n' ] && [ $download_source != 'N' ] ; do
      echo -n "Mauvais paramètre, Télécharger les sources depuis gitlab Y,N ? [Default N] : "
      read download_source
 done
-if [ $download_source == 'y' ] || [ $download_source == 'Y' ]
-then
+if [ $download_source == 'y' ] || [ $download_source == 'Y' ] ; then
     echo -n "Url git des sources upstream (ex : git@gitlab.asdoria.org:alvis/alvis-audio.git) : "
     read url_git
 
-    while [ -z $url_git ]
-    do
+    while [ -z $url_git ] ; do
          echo -n "Mauvais paramètre, Url git des sources (ex : git@gitlab.asdoria.org:alvis/alvis-audio.git) : "
          read url_git
     done
     # FORK
     echo -n "Avez-vous forké le projet Y,N ? [Default N] : "
     read fork
-    if [ -z $fork ]
-    then
+    if [ -z $fork ] ; then
         fork="N"
     fi
     while [ $fork != 'y' ] && [ $fork != 'Y' ]  && [ $fork != 'n' ] && [ $fork != 'N' ]
@@ -128,8 +118,7 @@ then
          echo -n "Mauvais paramètre, Avez-vous forké le projet Y,N ? [Default N] : "
          read fork
     done
-    if [ $fork == 'y' ] || [ $fork == 'Y' ]
-    then
+    if [ $fork == 'y' ] || [ $fork == 'Y' ] ; then
         echo -n "Url du fork : "
         read url_fork
 
@@ -146,22 +135,18 @@ echo -e "\n"
 #Base de donnée
 echo -n "Créer une base de donnée Y,N ? [Default N] : "
 read create_database
-if [ -z $create_database ]
-then
+if [ -z $create_database ] ; then
     create_database="N"
 fi
-while [ $create_database != 'y' ] && [ $create_database != 'Y' ]  && [ $create_database != 'n' ] && [ $create_database != 'N' ]
-do
+while [ $create_database != 'y' ] && [ $create_database != 'Y' ]  && [ $create_database != 'n' ] && [ $create_database != 'N' ] ; do
      echo -n "Mauvais paramètre, Créer une base de donnée Y,N ? [Default Y] : "
      read create_database
 done
 
-if [ $create_database == 'y' ] || [ $create_database == 'Y' ]
-then
+if [ $create_database == 'y' ] || [ $create_database == 'Y' ] ; then
     echo -n "Database name [default : $project_name)] : "
     read database_name
-    if [ -z $database_name ]
-    then
+    if [ -z $database_name ] ; then
         database_name=$project_name
     fi
 fi
@@ -170,15 +155,13 @@ echo -e "\n"
 #=================================================
 # Téléchargement des sources
 #=================================================
-if [ $download_source == 'y' ] || [ $download_source == 'Y' ]
-then
+if [ $download_source == 'y' ] || [ $download_source == 'Y' ] ; then
     echo "Téléchargement des sources via git : $url_git"
     #echo "sudo -u $username git clone $url_git $project_path"
     sudo -u $username git clone $url_git $project_path
     sudo -u $username git -C $project_path remote add upstream $url_git
     erreur
-    if [ $fork == 'y' ] || [ $fork == 'Y' ]
-    then
+    if [ $fork == 'y' ] || [ $fork == 'Y' ] ; then
         sudo -u $username git -C $project_path remote set-url origin $url_fork
     fi
 fi
@@ -237,8 +220,7 @@ erreur
 # Création de la base de données
 #=================================================
 
-if [ $create_database == 'y' ] || [ $create_database == 'Y' ]
-then
+if [ $create_database == 'y' ] || [ $create_database == 'Y' ] ; then
     echo "Création de la base de donnée $database_name"
     create_database_sql="CREATE DATABASE $database_name CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
     echo -n "mysql -u $database_user -p$database_password -e \"$create_database_sql\" "
@@ -246,6 +228,37 @@ then
     echo -e "\n"
 fi
 
-echo -e "${GREEN}[SUCCESS]- lisez bien le README du projet - http://$hostname${NC}"
-echo -e "\n"
+#=================================================
+# Dump
+#=================================================
+if [ -d "$project_path/dump" ] ; then
+    nbFiles=`ls "$project_path/dump/"*.sql | wc -l`
+    if [ $nbFiles > 0 ] ; then
+        echo  "Voulez-vous jouer un dump ? (n pour annuler)"
+        echo -e "\n"
+        files=( $project_path/dump/*.sql )
 
+        PS3="Votre choix : "
+        select file in "${files[@]}" ; do
+            if [[ $REPLY == "n" ]] ; then
+                exit
+            elif [[ $REPLY == "N" ]]; then
+                exit
+            elif [[ -z $file ]]; then
+                echo 'Invalid choice, try again' >&2
+            else
+                break
+            fi
+        done
+       if [ ! -z $file ]
+       then
+            echo "Import du dump $file"
+            echo "mysql -u $database_user -p$database_password -D "$database_name" < $file"
+            mysql -u $database_user -p$database_password -D "$database_name" < $file
+            echo -e "\n"
+       fi
+    fi
+
+fi
+
+echo -e "${GREEN}[SUCCESS]- lisez bien le README du projet - http://$hostname${NC}"

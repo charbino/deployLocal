@@ -1,15 +1,23 @@
-## Deploy Local
+# Deploy Local
 Ce script bash permet d'automatiser la phase de configuration d'un projet sur le poste d'un développeur. 
 
+Type de projet supporté : 
+<ul>
+    <li>Prestashop</li>
+    <li>Symfony</li>
+    <li>Wordpress</li>
+</ul>
 Process : 
  <ul>
     <li>Ajout du hostname dans /etc/hosts</li>
     <li>Création de la configuration nginx en fonction du type de projet (prestashop, symfony, wordpress)</li>
     <li>Téléchargement des sources depuis git (github, gitlab ect ....)  [Optionnel]</li>
     <li>Création de la base de donnée  [Optionnel]</li>
+    <li>Import d'un dump (si le projet contient un dossier /dump  [Optionnel]</li>
 </ul>
 
-### Installation
+## Installation
+
 1) Changer les paramètres au début du fichier `deployLocal/deployLocal.sh`
 
 2) Mettre les sources dans le dossier `/usr/local/bin/deployLocal`
@@ -21,7 +29,7 @@ sudo cp -r deployLocal /usr/local/lib/deployLocal
 sudo ln -s /usr/local/lib/deployLocal/deploy.sh /usr/local/bin/deployLocal
 ```
 
-### Utilisation
+## Utilisation
 Vous pouvez utiliser la commande n'importe ou. 
 
 Il faut utiliser la commande en sudo : 
